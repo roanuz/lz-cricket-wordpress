@@ -2,13 +2,11 @@
 
 require_once 'lzconfig.php';
 
-function encr_key($ak, $ex){
-  // $cipher = new token( 'LSDXXSSSL2li342#@$f;;aso8f;ahf;akdhj3sfl_');
-  $encrypted = mc_encrypt( $key );
-  setcookie( 'lzak', $encrypted, 60*60*5 );
-}
+function getAccessToken(){
+  if(!session_id()){
+  	session_start();
+  }
 
-function dcr_key(){
   if($_SESSION['lzak']){
 	  // $cipher = new token( 'LSDXXSSSL2li342#@$f;;aso8f;ahf;akdhj3sfl_');
 	  // return mc_decrypt( $_COOKIE['lzak'] );  	
@@ -17,10 +15,9 @@ function dcr_key(){
   return false;
 }
 
-
-function authset(){
+function setAccessToken(){
     if(!session_id()){
-    	session_start();
+      session_start();
     }
 
 	$dk = $_COOKIE['lzdk'];
@@ -29,24 +26,24 @@ function authset(){
 		setcookie('lzdk', $dk, 60*60*24*10, '/');
 	}
 
-    $response = auth();
+    $response = auth(session_id());
     $accessToken = $response['auth']['access_token'];
     $expiresIn = intval($response['auth']['expires']);
-    // encr_key($accessToken, $expiresIn);
+    // set_at($accessToken, $expiresIn);
 
     $_SESSION['lzak'] = $accessToken;
     $_SESSION['lzake'] = $expiresIn;
     return $accessToken;
 }
 
-function auth() {
+function auth($deviceId) {
 
 	$lz_appconfig = get_option( 'litzscore_app_options_info' );	
 	$fields = array(
 		'access_key' => $lz_appconfig['access_key'],
 		'secret_key' => $lz_appconfig['secret_key'],
 		'app_id' => $lz_appconfig['appid'],
-		'device_id' => 'WP_DEV_1',
+		'device_id' => $deviceId,
 	);	
 
 	$fields_string = '';

@@ -193,20 +193,27 @@ function insert_script_src() {
     'ajaxUrl' => admin_url( 'admin-ajax.php' ),
     'templateUrl' => $plugin_url.'views/',
     // 'nonce' => $nonce_value,
+    'flags' => array(
+      'stz' => 'http://www.sknpatriots.com/wp-content/uploads/2015/05/stlucia_zouks.png',
+      'snp' => 'http://www.sknpatriots.com/wp-content/uploads/2015/05/SKN-Patriots.png',
+      'bt' => 'http://www.sknpatriots.com/wp-content/uploads/2015/05/barbados_tridents.png',
+      'jt' => 'http://www.sknpatriots.com/wp-content/uploads/2015/05/jamaica_tallawahs.png',
+      'gaw' => 'http://www.sknpatriots.com/wp-content/uploads/2015/05/guyana_amazon_warriors.png',
+    ),
   ));
 }
 
 
 function lzmatch_request(){
-  $ak = dcr_key();
+  $ak = getAccessToken();
   if($ak){
     $matchKey = $_REQUEST['key'];
     $aa = getMatch($ak, $matchKey, 'full_card');
     // wp_send_json(array('a'=>'a'));
     exit();
   }else{
-    authset();
-    $ak = dcr_key();
+    setAccessToken();
+    $ak = getAccessToken();
     if($ak){
       lzmatch_request();
     }else{
@@ -225,14 +232,15 @@ function lzMatch($attrs){
   lzInit();
   $attrs = shortcode_atts(array(
                 'key' => 'null',
-                'card_type' =>'null'), 
-                $attrs, 'lzwidget' );
+                'card_type' =>'null',
+                'theme' => 'lz-theme-green-red'), 
+                $attrs, 'lzmatch' );
 
   $matchKey = $attrs['key'];
   $nonceValue = wp_create_nonce( 'lzapiactionsmatch' );
   echo '
-          <div ng-app="lzCricket"  class="lz-theme-green-red">
-            <div lz-cricket-match="'.$matchKey.'" sec="'.$nonceValue.'"></div>
+          <div ng-app="lzCricket">
+            <div class="lz-outter-box '. $attrs['theme'] .'" lz-cricket-match="'.$matchKey.'" sec="'.$nonceValue.'"></div>
           </div>
         ';
 }
