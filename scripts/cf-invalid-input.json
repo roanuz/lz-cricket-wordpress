@@ -1,0 +1,14 @@
+{
+    "DistributionId": "E3TI44SJKXQYB5", 
+    "InvalidationBatch": {
+        "Paths": {
+            "Quantity": 3, 
+            "Items": [
+                "/release/wordpress/plugin/cricket-litzscore.zip",
+                "/release/wordpress/css/lz-cricket.css",
+                "/release/wordpress/css/lz-cricket-angular.js"
+            ]
+        }, 
+        "CallerReference": "wp-plugin-publish"
+    }
+}
