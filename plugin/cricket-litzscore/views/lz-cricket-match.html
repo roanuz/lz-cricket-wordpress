@@ -1,64 +1,94 @@
 <div class="lz lz-match">
 
-  <div class="row lz-loading animate-show" ng-show="dataStatus == 'loading'">
-    <p>loading matching...</p>
+  <div class="row animate-show" ng-show="dataStatus == 'loading'">
+    <div class="col-md-12">
+      <div class="lz-loading">
+        <p>loading match...</p>
+      </div>
+    </div> 
   </div>
 
-  <div class="row lz-data-error animate-show" ng-show="dataStatus == 'error'">
-    <p>Oops! Something went wrong!</p>
+  <div class="row animate-show" ng-show="dataStatus == 'error'">
+    <div class="col-md-12">
+      <div class="lz-data-error">
+        <p>Oops! Something went wrong!</p>
+      </div>
+    </div>
   </div>  
 
   <div class="animate-show" ng-show="dataStatus == 'ready'">
     
-    <div class="row lz-msg lz-color-3-bg">
-      <h3 ng-bind="match.msgs.info"></h3>  
-    </div>
-
-    <div class="row lz-head lz-color-2-bg">
-      <div ng-repeat="teamKey in appConfig.cricket.possibleTeams" 
-        class="col-sm-6 team-head team-{{teamKey}}">
-        <div class="flag"></div>
-        <div class="team">
-          <div ng-show="match.status == 'notstarted'">
-            <h1 ng-bind="match.teams[teamKey].key | uppercase"></h1>
-            <h2 ng-bind="match.teams[teamKey].name"></h2>
-          </div>
-          <div ng-show="match.status != 'notstarted'">
-            <h1 ng-bind="match.teams[teamKey].name"></h1>
-            <div ng-show="match.innings[teamKey + '_1']">
-              <h2>
-                <span ng-bind="match.innings[teamKey + '_1'].runs"></span>/<span ng-bind="match.innings[teamKey + '_1'].wickets"></span>
-              </h2>
-              <div class="runs">Run Rate: <b ng-bind="match.innings[teamKey + '_1'].run_rate"></b></div>  
-              <div class="overs">Overs: <b ng-bind="match.innings[teamKey + '_1'].overs">20</b></div>                
-            </div>
-            <div ng-show="!match.innings[teamKey + '_1']">
-              <h2>0/0</h2>
-            </div>
-          </div>          
-        </div>
-        
+    <div class="row">
+      <div class="col-md-12">
+        <div class="lz-msg lz-color-3-bg">
+          <h3 ng-bind="match.msgs.info"></h3>
+        </div>  
       </div>
     </div>
 
-    <div class="lz-tabs lz-color-1-bg">
-      <ul>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="lz-head lz-color-2-bg">
+          <div class="row">
 
-        <li 
-          ng-click="activeView='overview'"
-          ng-class="{'active lz-color-4-bg': activeView=='overview'}">Overview</li>
+            <div ng-repeat="teamKey in appConfig.cricket.possibleTeams" 
+              class="xcol-sm-6 team-head team-{{teamKey}}">
+              <div class="">
+                <div class="flag">
+                  <img ng-src="{{teamFlagUrl(match.teams[teamKey].key)}}">
+                </div>
+                <div class="team">
+                  <div ng-show="match.status == 'notstarted'">
+                    <h1 ng-bind="match.teams[teamKey].key | uppercase"></h1>
+                    <h2 ng-bind="match.teams[teamKey].name"></h2>
+                  </div>
+                  <div ng-show="match.status != 'notstarted'">
+                    <h1 ng-bind="match.teams[teamKey].name"></h1>
+                    <div ng-show="match.innings[teamKey + '_1']">
+                      <h2>
+                        <span ng-bind="match.innings[teamKey + '_1'].runs"></span>/<span ng-bind="match.innings[teamKey + '_1'].wickets"></span>
+                      </h2>
+                      <div class="runs">Run Rate: <b ng-bind="match.innings[teamKey + '_1'].run_rate"></b></div>  
+                      <div class="overs">Overs: <b ng-bind="match.innings[teamKey + '_1'].overs">20</b></div>                
+                    </div>
+                    <div ng-show="!match.innings[teamKey + '_1']">
+                      <h2>0/0</h2>
+                    </div>
+                  </div>          
+                </div>             
+              </div>
+            </div>
 
-        <li 
-          ng-click="activeView='scorecard'"
-          ng-class="{'active lz-color-4-bg': activeView=='scorecard'}">Scorecard</li>
-        <li 
-          ng-click="activeView='teams'"
-          ng-class="{'active lz-color-4-bg': activeView=='teams'}">Teams</li>
-        <li 
-          ng-click="activeView='balls'"
-          ng-if="false" ng-class="{'active lz-color-4-bg': activeView=='balls'}">Balls</li>
-      </ul>
-      <div class="clearfix"></div>
+            <div class="clearfix"></div>
+
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="lz-tabs lz-color-1-bg">
+          <ul>
+            <li 
+              ng-click="activeView='overview'"
+              ng-class="{'active lz-color-4-bg': activeView=='overview'}">Overview</li>
+
+            <li 
+              ng-click="activeView='scorecard'"
+              ng-class="{'active lz-color-4-bg': activeView=='scorecard'}">Scorecard</li>
+            <li 
+              ng-click="activeView='teams'"
+              ng-class="{'active lz-color-4-bg': activeView=='teams'}">Teams</li>
+            <li 
+              ng-click="activeView='balls'"
+              ng-if="false" ng-class="{'active lz-color-4-bg': activeView=='balls'}">Balls</li>
+          </ul>
+          <div class="clearfix"></div>
+        </div>
+      </div>
     </div>
 
     <div class="lz-overview" ng-show="activeView=='overview'">
@@ -112,9 +142,9 @@
               <thead>
                 <tr class="lz-color-3-bg">
                   <th class="lz-color-4-bg">Batsman</th>
-                  <th></th>
-                  <th>Runs</th>
-                  <th>Balls</th>
+                  <th class="lz-hide-on-mobile"></th>
+                  <th class="small-col"><span class="lz-hide-on-mobile">Runs</span><span class="lz-show-on-mobile">R</span></th>
+                  <th><span class="lz-hide-on-mobile">Balls</span><span class="lz-show-on-mobile">B</span></th>
                   <th>SR</th>
                   <th>4s</th>
                   <th>6s</th>
@@ -122,9 +152,12 @@
               </thead>
               <tbody>
                 <tr ng-repeat="pk in inn.batting_order">
-                  <td ng-bind="match.players[pk].name"></td>
-                  <td ng-bind="match.players[pk].match.innings[inn.inningsNumber].batting.out_str"></td>
-                  <td class="bold" ng-bind="match.players[pk].match.innings[inn.inningsNumber].batting.runs"></td>
+                  <td>
+                    <div ng-bind="match.players[pk].name"></div>
+                    <div class="lz-show-on-mobile smallinfo" ng-bind="match.players[pk].match.innings[inn.inningsNumber].batting.out_str"></div>
+                  </td>
+                  <td class="lz-hide-on-mobile" ng-bind="match.players[pk].match.innings[inn.inningsNumber].batting.out_str"></td>
+                  <td class="bold small-col" ng-bind="match.players[pk].match.innings[inn.inningsNumber].batting.runs"></td>
                   <td ng-bind="match.players[pk].match.innings[inn.inningsNumber].batting.balls"></td>
                   <td ng-bind="match.players[pk].match.innings[inn.inningsNumber].batting.strike_rate"></td>
                   <td ng-bind="match.players[pk].match.innings[inn.inningsNumber].batting.fours"></td>
@@ -132,12 +165,12 @@
                 </tr>
                 <tr class="extras"> 
                   <td>Extras</td>
-                  <td>(nb <span ng-bind="inn.noball"></span>, b <span ng-bind="inn.bye"></span>, lb <span ng-bind="inn.legbye"></span>)</td>
+                  <td class="lz-hide-on-mobile">(nb <span ng-bind="inn.noball"></span>, b <span ng-bind="inn.bye"></span>, lb <span ng-bind="inn.legbye"></span>)</td>
                   <td class="bold" ng-bind="inn.extras" colspan="5"></td>
                 </tr>
                 <tr class="total lz-color-4-bg-r"> 
                   <td>Total</td>
-                  <td>(<span ng-bind="inn.wickets"></span> wickets, <span ng-bind="inn.overs"></span> overs)</td>
+                  <td class="lz-hide-on-mobile">(<span ng-bind="inn.wickets"></span> wickets, <span ng-bind="inn.overs"></span> overs)</td>
                   <td class="bold" ng-bind="inn.runs" colspan="5"></td>
                 </tr>
               </tbody>
@@ -145,7 +178,7 @@
           </div>
         </div>
 
-        <div class="col-md-6">
+        <div class="col-sm-6">
           <div class="bowling">
             <table class="table table-condensed lz-color-white">
               <thead>
@@ -172,7 +205,7 @@
           </div>
         </div>
 
-        <div class="col-md-6">
+        <div class="col-sm-6">
           <div class="lz-fow lz-color-white">
             <h5 class="lz-table-title lz-color-5-bg">Fall of Wickets</h5>
             <ul class="fow-content">
@@ -188,7 +221,7 @@
     <div class="lz-teams" ng-show="activeView=='teams'">
 
       <div class="row" ng-if="match.teams.a.match.playing_xi">
-        <div class="col-md-6" ng-repeat="teamKey in appConfig.cricket.possibleTeams">
+        <div class="col-sm-6" ng-repeat="teamKey in appConfig.cricket.possibleTeams">
           <div class="team lz-color-white">
             <h5 class="lz-table-title lz-color-3-bg">Playing XI: {{match.teams[teamKey].short_name}}</h5>
             <ol>
@@ -204,7 +237,7 @@
 
 
       <div class="row">
-        <div class="col-md-6" ng-repeat="teamKey in appConfig.cricket.possibleTeams">
+        <div class="col-sm-6" ng-repeat="teamKey in appConfig.cricket.possibleTeams">
           <div class="team lz-color-white">
             <h5 class="lz-table-title lz-color-5-bg">Squad: {{match.teams[teamKey].name}}</h5>
             <ul>
