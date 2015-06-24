@@ -11,3 +11,5 @@ wp-content/cache/
 wp-content/upgrade/
 wp-content/uploads/
 wp-content/wp-cache-config.php
+asserts/node_modules
+lz-cricket-wordpress.sublime-workspace

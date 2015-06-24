@@ -1,7 +1,11 @@
-LZCONFIG = LZCONFIG || {
-  'templateUrl': '../view/',
-  'ajaxUrl': '',
-};
+if(typeof(LZCONFIG) === 'undefined'){
+  LZCONFIG = {
+    'templateUrl': '../views/',
+    'ajaxUrl': '/api/',
+  };  
+}
+
+
 angular.module('lzCricket', [
   'ngAnimate'
 ])
@@ -61,8 +65,16 @@ angular.module('lzCricket', [
     controller: function($scope, $element, $attrs, appConfig, $timeout) {
       $scope.dataStatus = 'loading'; //'ready', 'error'
       $scope.match = null;
-      $scope.activeView = 'overview';
+      $scope.activeView = null;
       $scope.appConfig = appConfig;
+
+      $scope.teamFlagUrl = function(key){
+        if(LZCONFIG['flags'] && LZCONFIG.flags[key]){
+          return LZCONFIG.flags[key];
+        }else{
+          return 'http://img.litzscore.com/flags/' + key + '_s.png'
+        }
+      }
 
 
       function onMatchUpdate(match){
@@ -98,7 +110,7 @@ angular.module('lzCricket', [
           match.allInnings[k].inningsNumber = b[1];
         }
 
-        if(match.status != 'notstarted'){
+        if(!($scope.activeView) && match.status != 'notstarted'){
           $scope.activeView = 'scorecard';
         }
 

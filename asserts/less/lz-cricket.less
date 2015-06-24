@@ -8,6 +8,7 @@
 @color-3: #1976D2;
 @color-4: #000;
 @color-5: #000;
+@color-bg: #F5F5F5;
 
 @color-1-r: #333;
 @color-2-r: #333;
@@ -29,6 +30,7 @@
 .lz-color-5-bg-r{background-color: @color-5-r; color:@color-5 };
 
 .lz-color-white{background-color: #fff;}
+.lz-color-bg{background-color: @color-bg;};
 
 .lz-theme-green-red{
   @color-1: #0b8205;
@@ -36,6 +38,7 @@
   @color-3: #424242;
   @color-4: #e53935;
   @color-5: #616161;
+  @color-bg: #F5F5F5;
 
   @color-1-r: #fff;
   @color-2-r: #424242;
@@ -56,6 +59,34 @@
   .lz-color-5-bg-r{background-color: @color-5-r; color:@color-5 };
 
   .lz-color-white{background-color: #fff;}
+  .lz-color-bg{background-color: @color-bg;};
+
+  &.lz-outter-box{
+    max-width:800px;
+    margin:auto;
+    padding:0px 5px;
+  }
+
+  .table tbody tr:hover{
+    background-color: inherit;
+  }
+
+  .table tbody tr:nth-child(even){
+    background-color: inherit;
+  }
+
+  .table tbody tr td{
+    color: inherit;
+    font-weight: inherit;
+    font-family: inherit;
+  }
+
+  ul{
+    list-style: none;
+    li{
+      list-style: none;
+    }
+  }
 }
 
 /************* THEMES END ************/
@@ -77,6 +108,24 @@ ul{
 
 table, th, td{
   border:0;
+}
+
+.lz-hide-on-mobile{
+  display: block;
+}
+
+.lz-show-on-mobile{
+  display: none;
+}
+
+@media (max-width: 480px){
+  .lz-hide-on-mobile{
+    display: none;
+  }
+
+  .lz-show-on-mobile{
+    display: block;
+  }  
 }
 
 .soft-hide{
@@ -177,12 +226,39 @@ table, th, td{
     padding: 20px 10px;
     margin-bottom: 10px;
 
+    .team-head{
+      width: 50%;
+      float: left;
+      padding: 10px;
+    }
+
+    .flag{
+      width: 100px;
+      float: left;
+
+      img{
+        width: 80px;
+      }
+    }
+
+    .team{
+      margin-left: 100px;
+    }
     .team-a{
       text-align: right;
     }
 
     .team-b{
       text-align: left;
+
+      .team{
+        margin-left: 0;
+        margin-right: 100px;
+      }
+
+      .flag{
+        float: right;
+      }
     }
 
     h1{
@@ -207,6 +283,62 @@ table, th, td{
       line-height: 1.1;
       font-weight: 300;
     }
+
+    @media (max-width:680px){
+      .flag{
+        width: 40px;
+        img{
+          width: 40px;
+        }
+      }
+
+      .team{
+        margin-left: 40px;
+      }
+
+      .team-b{
+        .team{
+          margin-left: 0;
+          margin-right: 40px;
+        }
+      }      
+
+    }
+
+    @media (max-width:540px){
+      .team-head{
+        width: 100%;
+        float: none;
+      }
+
+
+      .team-a, .team-b{
+        text-align: left;
+      }
+
+      .team-b{
+        margin-top: 10px;
+       .flag{
+          float: left;
+        }        
+      }
+
+      .runs, .overs{
+        float: left;
+        margin-right: 5px;
+        color: #696969;
+      }
+
+      h1{
+        font-size: 14px;
+      }
+
+      h2{
+        font-size: 28px;
+        line-height: 1.1;
+      }
+    }
+
   }
 
   .lz-tabs{
@@ -238,7 +370,7 @@ table, th, td{
   .lz-innings{
 
     .innings{
-      margin-bottom: 10px;
+      padding-bottom: 10px;
     }
 
 
@@ -246,6 +378,7 @@ table, th, td{
       text-transform: uppercase;
       line-height: 1.4;
       font-weight: 300;
+      margin-bottom: 5px;
     }
 
     table{
@@ -262,10 +395,10 @@ table, th, td{
           &:first-child{
             padding-left: 10px;
             padding-right: 10px;        
-          }              
+          }                       
         }
 
-        td{
+        td {
           font-size: 12px;
           border-top-color: #F5F5F5;
 
@@ -277,7 +410,18 @@ table, th, td{
 
           &.bold{
             font-weight: 500;
-          }      
+          }   
+
+          .smallinfo{
+            font-weight: normal;
+            font-size: 12px;
+          }  
+
+          // @media (max-width: 480px){
+          //   &:first-child{
+          //     min-width: 180px;
+          //   }
+          // } 
         }
 
         &:first-child{
@@ -297,7 +441,7 @@ table, th, td{
 
         &.total{
           td{
-            font-size: 16;
+            font-size: 16px;
             line-height: 40px;
 
             background-color: inherit;
