@@ -65,10 +65,17 @@
     max-width:800px;
     margin:auto;
     padding:0px 5px;
+    background-color: @color-bg;
+  }
+
+  .table{
+    float: none;
+    position: static;
+
   }
 
   .table tbody tr:hover{
-    background-color: inherit;
+    background-color: inherit !important;
   }
 
   .table tbody tr:nth-child(even){
@@ -87,6 +94,16 @@
       list-style: none;
     }
   }
+
+  @media (max-width: 480px){
+    .table > thead > tr > th, .table tbody tr td {
+      width: auto;
+      float: none;
+      text-align: inherit;
+    }
+  }
+
+  
 }
 
 /************* THEMES END ************/
@@ -232,6 +249,14 @@ table, th, td{
       padding: 10px;
     }
 
+    .head-venue{
+      text-align: center;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+
+
+
     .flag{
       width: 100px;
       float: left;
@@ -262,7 +287,7 @@ table, th, td{
     }
 
     h1{
-      font-size: 18px;
+      font-size: 16px;
       line-height: 1;
       font-weight: 300;
       margin: 0;
@@ -284,7 +309,8 @@ table, th, td{
       font-weight: 300;
     }
 
-    @media (max-width:680px){
+    // @media (max-width:680px){
+      @media (max-width:770px){
       .flag{
         width: 40px;
         img{
@@ -305,12 +331,22 @@ table, th, td{
 
     }
 
-    @media (max-width:540px){
+    // @media (max-width:540px){
+    @media (max-width:770px){
       .team-head{
         width: 100%;
         float: none;
       }
 
+
+      .team{
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+      }
+
+      .flag{
+        margin-right: 5px;
+      }
 
       .team-a, .team-b{
         text-align: left;
@@ -362,6 +398,11 @@ table, th, td{
         &.active{
           // background-color: #E53935;
         }
+      }
+
+
+      @media (max-width:540px){
+        font-size: 12px;
       }
 
     }
@@ -484,6 +525,15 @@ table, th, td{
       h5{
         margin-bottom: 10px;
       }
+    }
+
+    ul{
+      margin: 5px 10px;
+      padding: 0; 
+    }
+
+    ol{
+      margin: 5px 10px;
     }
 
   }

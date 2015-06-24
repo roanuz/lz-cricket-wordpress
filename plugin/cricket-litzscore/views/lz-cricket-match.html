@@ -21,7 +21,8 @@
     <div class="row">
       <div class="col-md-12">
         <div class="lz-msg lz-color-3-bg">
-          <h3 ng-bind="match.msgs.info"></h3>
+          <h3 ng-show="match.msgs.info" ng-bind="match.msgs.info"></h3>
+          <h3 ng-show="!match.msgs.info">Starts {{match.start_date.starts_in}}</h3>
         </div>  
       </div>
     </div>
@@ -39,8 +40,8 @@
                 </div>
                 <div class="team">
                   <div ng-show="match.status == 'notstarted'">
-                    <h1 ng-bind="match.teams[teamKey].key | uppercase"></h1>
-                    <h2 ng-bind="match.teams[teamKey].name"></h2>
+                    <h1 ng-bind="match.teams[teamKey].name"></h1>
+                    <h2 ng-bind="match.teams[teamKey].key | uppercase"></h2>
                   </div>
                   <div ng-show="match.status != 'notstarted'">
                     <h1 ng-bind="match.teams[teamKey].name"></h1>
@@ -64,6 +65,10 @@
 
             
           </div>
+
+          <div ng-show="match.status == 'notstarted'">
+            <div class="head-venue lz-hide-on-mobile" ng-bind="match.venue"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -77,6 +82,7 @@
               ng-class="{'active lz-color-4-bg': activeView=='overview'}">Overview</li>
 
             <li 
+              ng-show="match.batting_order.length > 0"
               ng-click="activeView='scorecard'"
               ng-class="{'active lz-color-4-bg': activeView=='scorecard'}">Scorecard</li>
             <li 
@@ -137,7 +143,7 @@
             <span ng-bind="match.teams[inn.teamKey].name"></span> (Run Rate:
             <span ng-bind="inn.run_rate"></span>)
           </h4>
-          <div class="batting">
+          <div class="batting" ng-show="inn.batting_order.length > 0">
             <table class="table table-condensed table-hover lz-color-white">
               <thead>
                 <tr class="lz-color-3-bg">
@@ -179,7 +185,7 @@
         </div>
 
         <div class="col-sm-6">
-          <div class="bowling">
+          <div class="bowling" ng-show="inn.bowling_order > 0">
             <table class="table table-condensed lz-color-white">
               <thead>
                 <tr class="lz-color-5-bg">
@@ -206,7 +212,7 @@
         </div>
 
         <div class="col-sm-6">
-          <div class="lz-fow lz-color-white">
+          <div class="lz-fow lz-color-white" ng-show="inn.fall_of_wickets > 0">
             <h5 class="lz-table-title lz-color-5-bg">Fall of Wickets</h5>
             <ul class="fow-content">
               <li class="fow" ng-repeat="f in inn.fall_of_wickets" ng-bind="f"></li>

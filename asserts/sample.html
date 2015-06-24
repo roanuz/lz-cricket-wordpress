@@ -12,7 +12,21 @@
   <body style="background-color:gray;">
     <div class="container-fluid">
       <div ng-app="lzCricket">
-        <div lz-cricket-match="" class="lz-outter-box lz-theme-green-red lz-color-bg"></div>
+        <div lz-cricket-match="notstarted" class="lz-outter-box lz-theme-green-red lz-color-bg"></div>
+        <br/>
+        <hr/>
+        <br/>
+        <div lz-cricket-match="completed" class="lz-outter-box lz-theme-green-red lz-color-bg"></div>
+        <br/>
+        <hr/>
+        <br/>        
+        <div lz-cricket-match="started" class="lz-outter-box lz-theme-green-red lz-color-bg"></div>
+        <br/>
+        <hr/>
+        <br/>
+        <div lz-cricket-match="cancelled" class="lz-outter-box lz-theme-green-red lz-color-bg"></div>    
+        
+
       </div>
     </div>
     <!-- Angular Material Dependencies -->

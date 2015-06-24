@@ -8,8 +8,6 @@ function getAccessToken(){
   }
 
   if($_SESSION['lzak']){
-	  // $cipher = new token( 'LSDXXSSSL2li342#@$f;;aso8f;ahf;akdhj3sfl_');
-	  // return mc_decrypt( $_COOKIE['lzak'] );  	
   	return $_SESSION['lzak'];
   }
   return false;
@@ -29,7 +27,6 @@ function setAccessToken(){
     $response = auth(session_id());
     $accessToken = $response['auth']['access_token'];
     $expiresIn = intval($response['auth']['expires']);
-    // set_at($accessToken, $expiresIn);
 
     $_SESSION['lzak'] = $accessToken;
     $_SESSION['lzake'] = $expiresIn;
