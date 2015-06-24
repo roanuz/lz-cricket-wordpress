@@ -221,7 +221,7 @@
     <div class="lz-teams" ng-show="activeView=='teams'">
 
       <div class="row" ng-if="match.teams.a.match.playing_xi">
-        <div class="col-md-6" ng-repeat="teamKey in appConfig.cricket.possibleTeams">
+        <div class="col-sm-6" ng-repeat="teamKey in appConfig.cricket.possibleTeams">
           <div class="team lz-color-white">
             <h5 class="lz-table-title lz-color-3-bg">Playing XI: {{match.teams[teamKey].short_name}}</h5>
             <ol>
@@ -237,7 +237,7 @@
 
 
       <div class="row">
-        <div class="col-md-6" ng-repeat="teamKey in appConfig.cricket.possibleTeams">
+        <div class="col-sm-6" ng-repeat="teamKey in appConfig.cricket.possibleTeams">
           <div class="team lz-color-white">
             <h5 class="lz-table-title lz-color-5-bg">Squad: {{match.teams[teamKey].name}}</h5>
             <ul>
