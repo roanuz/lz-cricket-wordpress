@@ -15,6 +15,7 @@ Author URI: http://developers.litzscore.com/
 require_once 'lzconfig.php';
 require_once 'lz.php';
 
+
 class LitzscoreAdmin{
 
   private $fields = array(
@@ -204,12 +205,29 @@ function insert_script_src() {
 }
 
 
+function get_season_data($seasonKey){
+  $ak = getAccessToken();
+  if($ak){
+    $season = getSeason($ak, $seasonKey, 'full_card');
+    return $season;
+  }else{
+    setAccessToken();
+    $ak = getAccessToken();
+    if($ak){
+      get_season_data($seasonKey);
+    }else{
+      return array();
+    }    
+  }
+}
+
 function lzmatch_request(){
   $ak = getAccessToken();
   if($ak){
     $matchKey = $_REQUEST['key'];
-    $aa = getMatch($ak, $matchKey, 'full_card');
-    // wp_send_json(array('a'=>'a'));
+    $matchData = getMatch($ak, $matchKey, 'full_card');
+
+    wp_send_json(array('data'=>$matchData));
     exit();
   }else{
     setAccessToken();
@@ -245,9 +263,27 @@ function lzMatch($attrs){
         ';
 }
 
+function lzSeason($attrs){
+  lzInit();
+  $attrs = shortcode_atts(array(
+                'key' => 'null',
+                'card_type' =>'null',
+                'theme' => 'lz-theme-green-red'), 
+                $attrs, 'lzseasons');
+
+  $seasonKey = $attrs['key'];
+  $seasonData = get_season_data($seasonKey);
+  include_once 'views/season.php';
+  
+}
+
 add_shortcode('lzmatch', 'lzMatch');
+add_shortcode('lzseason', 'lzSeason');
 add_action( 'wp_ajax_lzmatch', 'lzmatch_request' );
 add_action( 'wp_ajax_nopriv_lzmatch', 'lzmatch_request' );
+// add_action( 'wp_ajax_lzseason', 'lzseason_request' );
+// add_action( 'wp_ajax_nopriv_lzseason', 'lzseason_request' );
+
 wp_register_script('angular', 'https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js');  
 wp_register_script('angular-animate', 'https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-animate.min.js');  
 wp_register_script('moment', 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js');  
