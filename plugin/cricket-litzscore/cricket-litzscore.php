@@ -138,40 +138,6 @@ class LitzscoreAdmin{
 }
 
 
-// function loadMatch($key){
-//   echo '
-//           <div ng-app="lzCricket">
-//             <div lz-cricket-match="'.$key.'"></div>
-//           </div>
-//         ';
-// }
-
-// function loadRecentMatches(){
-//   include('static/html/litzscore-recent_matches-view.php');
-// }
-
-// function set_access_token_cookie(){
-//   printf('<script type="text/javascript">
-//         window.lzAPIPrefix = "'.plugin_dir_url( __FILE__ ).'";
-//         window.lzTemplatePrefix = "'.plugin_dir_url( __FILE__ ).'views/";
-//         </script>');
-
-//   if(isset($_COOKIE['lz_at'])){
-//   }else{
-//       $response = auth();
-//       $accessToken=$response['auth']['access_token'];
-//       $expiresIn=$response['auth']['expires'];
-//       printf('<script type="text/javascript">
-//         window.lzTemplatePrefix = "'.plugin_dir_url( __FILE__ ).'views/";
-//         var expires = new Date();
-//         expires.setTime(expires.getTime() + parseInt('.$expiresIn.'));
-//         document.cookie ="lz_at='. $accessToken. ';expires=" + expires.toUTCString() + ";path=/";
-//         </script>');
-//   }
-// }
-
-
-
 function insert_footer_script(){  
   wp_enqueue_script('angular');
   wp_enqueue_script('angular-animate');
@@ -279,6 +245,7 @@ function lzSeason($attrs){
 
 add_shortcode('lzmatch', 'lzMatch');
 add_shortcode('lzseason', 'lzSeason');
+
 add_action( 'wp_ajax_lzmatch', 'lzmatch_request' );
 add_action( 'wp_ajax_nopriv_lzmatch', 'lzmatch_request' );
 // add_action( 'wp_ajax_lzseason', 'lzseason_request' );
@@ -287,11 +254,14 @@ add_action( 'wp_ajax_nopriv_lzmatch', 'lzmatch_request' );
 wp_register_script('angular', 'https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js');  
 wp_register_script('angular-animate', 'https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-animate.min.js');  
 wp_register_script('moment', 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js');  
-wp_register_script('lz-js', 'http://static.litzscore.com/release/sknpatriots/js/lz-cricket-angular.js'); 
+
 
 wp_register_style('roboto-font-css', 'https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic');
 wp_register_style('bootsrap-css', 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css');
-wp_register_style('lz-css', 'http://static.litzscore.com/release/sknpatriots/css/lz-cricket.css');
+
+$plugin_url = plugin_dir_url( __FILE__ );
+wp_register_script('lz-js', $plugin_url. '/views/lz-cricket-angular.js'); 
+wp_register_style('lz-css', $plugin_url . '/views/lz-cricket.css');
 
 
 if (is_admin())

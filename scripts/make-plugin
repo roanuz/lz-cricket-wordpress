@@ -1,0 +1,14 @@
+#! /bin/bash
+
+cd ../asserts
+echo "Making CSS"
+lessc less/lz-cricket.less css/lz-cricket.css
+
+echo "Coping files"
+cp css/lz-cricket.css ../plugin/cricket-litzscore/views/
+cp js/lz-cricket-angular.js ../plugin/cricket-litzscore/views/
+
+echo "Crating Zip file"
+cd ../plugin/
+zip -r cricket-litzscore.zip cricket-litzscore
+mv cricket-litzscore.zip ../release/

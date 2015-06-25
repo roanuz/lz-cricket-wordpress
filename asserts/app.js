@@ -7,7 +7,8 @@ app.get('/', function (req, res) {
 
 app.post('/api/', function (req, res) {
   if(req.query.action == 'lzmatch'){
-    res.sendFile(__dirname + '/sampledata/completed.json');
+    var k = req.query.key;
+    res.sendFile(__dirname + '/sampledata/'+k+'.json');
   }else{
     res.sendJSON({error:true});
   }

@@ -1,0 +1,26 @@
+#! /bin/bash
+
+#echo "Copy plugin files"
+aws s3 cp ../release/cricket-litzscore.zip s3://litzscore/release/wordpress/plugin/cricket-litzscore.zip
+
+#echo "Copy static files" 
+cd ../plugin/cricket-litzscore
+aws s3 cp views/lz-cricket.css s3://litzscore/release/wordpress/css/lz-cricket.css
+aws s3 cp views/lz-cricket-angular.js s3://litzscore/release/wordpress/js/lz-cricket-angular.js
+
+
+# make sure this command is enabled by 'aws configure set preview.cloudfront true'
+cd ../../scripts/
+
+read -r -p "Wish to invalidate on cloudfront? [y/N] " response
+if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]]
+then
+  echo "Invalidating files on Cloudfront"
+  
+  aws cloudfront create-invalidation --cli-input-json file://cf-invalid-input.json
+  
+  echo "Call the following cmd, to wait and check status of invalidation"
+  echo "aws cloudfront wait invalidation-completed --distribution-id E3TI44SJKXQYB5 --id ID_YOU_GOT_ABOVE"
+  echo "aws cloudfront get-invalidation --distribution-id E3TI44SJKXQYB5 --id ID_YOU_GOT_ABOVE"
+fi
+
