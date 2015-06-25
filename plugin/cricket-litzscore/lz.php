@@ -1,12 +1,11 @@
 <?php
 
 require_once 'lzconfig.php';
+if(!session_id()){
+	session_start();
+}
 
 function getAccessToken(){
-  if(!session_id()){
-  	session_start();
-  }
-
   if($_SESSION['lzak']){
   	return $_SESSION['lzak'];
   }
@@ -14,10 +13,6 @@ function getAccessToken(){
 }
 
 function setAccessToken(){
-    if(!session_id()){
-      session_start();
-    }
-
 	$dk = $_COOKIE['lzdk'];
 	if(!$dk){
 		$dk = 'xx';

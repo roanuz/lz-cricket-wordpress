@@ -68,6 +68,10 @@
     background-color: @color-bg;
   }
 
+  &.lz-season{
+    padding-right: 10px;
+  }
+
   .table{
     float: none;
     position: static;
@@ -93,6 +97,10 @@
     li{
       list-style: none;
     }
+  }
+
+  div{
+    font-size: inherit;
   }
 
   @media (max-width: 480px){
@@ -540,6 +548,134 @@ table, th, td{
 
 
 
+}
+
+
+&.lz-season{
+  a{
+    color: inherit;
+    &:hover{
+      color: inherit;
+      text-decoration: none;
+    }
+  }
+
+  .lz-season-filter{
+    select{
+      margin-bottom: 10px;
+    }
+  }
+  .match-col{
+    padding-bottom: 30px;
+    padding-right: 10px;
+    @_border-color: #F1EDED; // #C5C5C5;
+
+    .a-match{
+      background-color: #F9F9F9;
+      // border: 1px solid @_border-color;
+
+      .match-head{
+        text-align: center;
+        font-size: 12px;
+        line-height: 40px;
+      }
+
+      .match-info{
+        @_img_width: 50px;
+        padding: 20px 10px;
+        text-align: center;
+
+        .team-flag-a, .team-flag-b{
+          width: @_img_width;
+          float: left;
+          background-color: #F3F3F3;
+          padding: 5px;    
+          padding-top: 15px;      
+        }
+
+        .team-flag-a{
+          float: left;
+        }
+        .team-flag-b{
+          float: right;
+        }       
+
+        .team-name-a, .team-name-b{
+          margin-left: @_img_width + 5px;
+          margin-right: @_img_width + 5px;
+          font-size: 14px;
+          text-transform: uppercase;
+          line-height: 30px;
+
+        } 
+
+        .team-vs-txt{
+          width: 20px;
+          height: 20px;
+          line-height: 22px;
+          border-radius: 50%;
+          background-color: #9C9C9C;
+          color: #fff;
+          margin: auto;
+          font-size: 8px;
+          text-align: center;
+        }
+
+        @media(max-width: 480px){
+          @_img_width: 30px;
+          padding: 10px 10px;
+
+          .match-info-flags{
+            width: @_img_width + 10px;
+            float: right;
+          }
+          .team-flag-a, .team-flag-b{
+            width: @_img_width;
+            margin: 5px;
+            padding: 0; 
+            display: block;
+            margin-bottom: 10px;
+          }
+
+          .match-info-text{
+            // margin-top: 5px;
+            margin-right: @_img_width + 10px + 5px;
+          }
+          .team-name-a, .team-name-b{
+            margin-left: 5px;
+            margin-right: 5px;    
+            text-align: left;    
+            line-height: 37px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            height: 37px;                
+          }
+
+          .team-vs-txt{
+            margin-left: 5px;
+          }
+        }
+
+      }
+
+      .match-foot{
+        overflow: hidden;
+        font-size: 12px;
+        text-align: center;
+        line-height: 30px;
+        background-color: transparent;
+        border-top: 1px solid @_border-color;
+        border-bottom: 1px solid @_border-color;
+
+        @media(max-width: 480px){
+          font-size: 8px;
+        }
+
+      }
+
+
+    }
+  }
 }
 
 }

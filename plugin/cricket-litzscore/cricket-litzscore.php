@@ -14,129 +14,17 @@ Author URI: http://developers.litzscore.com/
 
 require_once 'lzconfig.php';
 require_once 'lz.php';
+require_once 'cricket-litzscore-admin.php';
 
+$LZ_FLAGS_MAPPING = array(
+  'stz' => 'http://www.sknpatriots.com/wp-content/uploads/2015/05/stlucia_zouks.png',
+  'snp' => 'http://www.sknpatriots.com/wp-content/uploads/2015/05/SKN-Patriots.png',
+  'bt' => 'http://www.sknpatriots.com/wp-content/uploads/2015/05/barbados_tridents.png',
+  'jt' => 'http://www.sknpatriots.com/wp-content/uploads/2015/05/jamaica_tallawahs.png',
+  'gaw' => 'http://www.sknpatriots.com/wp-content/uploads/2015/05/guyana_amazon_warriors.png',
+);
 
-class LitzscoreAdmin{
-
-  private $fields = array(
-    'appid'=>'App ID',
-    'access_key'=>'Access Key', 
-    'secret_key'=>'Secret Key');
-    /**
-     * Start up
-     */ 
-  public function __construct(){
-        add_action( 'admin_menu', array( $this, 'add_plugin_page' ) );
-        add_action( 'admin_init', array( $this, 'page_init' ) );
-  }
-
-    /**
-     * Add options page
-     */
-  public function add_plugin_page()
-    {
-        // This page will be under "Settings"
-        add_options_page(
-            'Settings Admin', 
-            'Litzscore', 
-            'manage_options', 
-            'litzscore-setting-admin', 
-            array( $this, 'create_admin_page' )
-        );
-    } 
-
-    /**
-     * Options page callback
-     */
-    public function create_admin_page()
-    {
-        // Set class property
-        $this->options = get_option( 'litzscore_app_options_info' );
-        ?>
-        <div class="wrap">
-            <?php screen_icon(); ?>
-            <h2>Litzscore App Details</h2>           
-            <form method="post" action="options.php">
-            <?php
-                // This prints out all hidden setting fields
-                settings_fields( 'litzscore_app_options' );   
-                do_settings_sections( 'litzscore-setting-admin' );
-                submit_button(); 
-            ?>
-            </form>
-        </div>
-        <?php
-    }
-
-
-    /**
-     * Register and add settings
-     */
-    public function page_init()
-    {        
-        register_setting(
-            'litzscore_app_options', // Option group
-            'litzscore_app_options_info', // Option name
-            array( $this, 'sanitize' ) // Sanitize
-        );
-
-        add_settings_section(
-            'lz_setting_section_id', // ID
-            '', // Title
-            array( $this, 'print_section_info' ), // Callback
-            'litzscore-setting-admin' // Page
-        );  
-
-        foreach ($this->fields as $field => $name) {
-          add_settings_field(
-              $field, // ID
-              $name, // Title 
-              array( $this, 'field_callback'), // Callback
-              'litzscore-setting-admin', // Page
-              'lz_setting_section_id', // Section
-              array($field)           
-          );
-        }
-    }
-
-    /**
-     * Sanitize each setting field as needed
-     *
-     * @param array $input Contains all settings fields as array keys
-     */
-    public function sanitize( $input )
-    {
-        $new_input = array();
-
-        foreach ($this->fields as $field => $name) {
-          if( isset( $input[$field] ) )
-              $new_input[$field] = sanitize_text_field( $input[$field] );
-      }
-        return $new_input;
-    }
-
-    /** 
-     * Print the Section text
-     */
-    public function print_section_info()
-    {
-        print 'Enter your litzscore app details here. For more information check <a href="https://developers.litzscore.com/">developers.litzscore.com</a>';
-    }
-
-    /** 
-     * Get the settings option array and print one of its values
-     */
-    public function field_callback($args)
-    {
-      $name = $args[0];
-        printf(
-            '<input type="text" id="'.$name.'" name="litzscore_app_options_info['.$name.']" value="%s" />',
-            isset( $this->options[$name] ) ? esc_attr( $this->options[$name]) : ''
-        );
-    }
-
-}
-
+$LZ_IMAGE_URL = 'http://img.litzscore.com/flags/%s_s.png';
 
 function insert_footer_script(){  
   wp_enqueue_script('angular');
@@ -153,6 +41,7 @@ function insert_header_script(){
 }
 
 function insert_script_src() {
+  global $LZ_FLAGS_MAPPING;
   $plugin_url = plugin_dir_url( __FILE__ );
   // $nonce_value = wp_create_nonce( 'lzapiactions' );
 
@@ -160,13 +49,7 @@ function insert_script_src() {
     'ajaxUrl' => admin_url( 'admin-ajax.php' ),
     'templateUrl' => $plugin_url.'views/',
     // 'nonce' => $nonce_value,
-    'flags' => array(
-      'stz' => 'http://www.sknpatriots.com/wp-content/uploads/2015/05/stlucia_zouks.png',
-      'snp' => 'http://www.sknpatriots.com/wp-content/uploads/2015/05/SKN-Patriots.png',
-      'bt' => 'http://www.sknpatriots.com/wp-content/uploads/2015/05/barbados_tridents.png',
-      'jt' => 'http://www.sknpatriots.com/wp-content/uploads/2015/05/jamaica_tallawahs.png',
-      'gaw' => 'http://www.sknpatriots.com/wp-content/uploads/2015/05/guyana_amazon_warriors.png',
-    ),
+    'flags' => $LZ_FLAGS_MAPPING,
   ));
 }
 
@@ -174,7 +57,7 @@ function insert_script_src() {
 function get_season_data($seasonKey){
   $ak = getAccessToken();
   if($ak){
-    $season = getSeason($ak, $seasonKey, 'full_card');
+    $season = getSeason($ak, $seasonKey, 'micro_card');
     return $season;
   }else{
     setAccessToken();
@@ -215,12 +98,17 @@ function lzInit(){
 function lzMatch($attrs){
   lzInit();
   $attrs = shortcode_atts(array(
-                'key' => 'null',
+                'key' => null,
                 'card_type' =>'null',
                 'theme' => 'lz-theme-green-red'), 
                 $attrs, 'lzmatch' );
 
-  $matchKey = $attrs['key'];
+  if($attrs['key'] && !is_null($attrs['key'])){
+    $matchKey = $attrs['key'];
+  }else{
+    $matchKey = get_query_var('lz_matchkey');
+  }
+
   $nonceValue = wp_create_nonce( 'lzapiactionsmatch' );
   echo '
           <div ng-app="lzCricket">
@@ -233,23 +121,59 @@ function lzSeason($attrs){
   lzInit();
   $attrs = shortcode_atts(array(
                 'key' => 'null',
-                'card_type' =>'null',
-                'theme' => 'lz-theme-green-red'), 
+                'card_type' =>'micro_card',
+                'theme' => 'lz-theme-green-red',
+                'match_page_id'=>null), 
                 $attrs, 'lzseasons');
 
   $seasonKey = $attrs['key'];
   $seasonData = get_season_data($seasonKey);
-  include_once 'views/season.php';
+  $matchUrlPrefix = get_site_url().'/matches/';
+
+  if(!is_null($attrs['match_page_id'])){
+    $matchUrlPrefix = $matchUrlPrefix . $attrs['match_page_id'] . '/';
+  }
+
+  include_once 'views/lz-cricket-season.php'; 
+}
+
+
+function lzGetTeamLogoUrl($key){
+  global $LZ_FLAGS_MAPPING;
+  global $LZ_IMAGE_URL;
+
+  if(array_key_exists($key, $LZ_FLAGS_MAPPING)){
+    return $LZ_FLAGS_MAPPING[$key];
+  }
+  return sprintf($LZ_IMAGE_URL, $key);
+}
+
+
+function add_lz_query_vars( $qvars ) {
+  $qvars[] = 'lz_matchkey';
+  return $qvars;
+}
+function custom_lz_rewrite_rule() {
+
+  add_rewrite_rule('^matches/([0-9]+)/([^/]*)/?','index.php?page_id=$matches[1]&lz_matchkey=$matches[2]','top');
+
+  $page = get_page_by_title( 'Matches' );
+  $pageId = null;
+  if($page){
+    $pageId = $page->ID;
+  }
+
+  add_rewrite_rule('^matches/([^/]*)/?','index.php?page_id='.$pageId.'&lz_matchkey=$matches[1]','top');
   
 }
 
+add_action('query_vars', 'add_lz_query_vars');
+add_action('init', 'custom_lz_rewrite_rule', 10, 0);
 add_shortcode('lzmatch', 'lzMatch');
 add_shortcode('lzseason', 'lzSeason');
 
 add_action( 'wp_ajax_lzmatch', 'lzmatch_request' );
 add_action( 'wp_ajax_nopriv_lzmatch', 'lzmatch_request' );
-// add_action( 'wp_ajax_lzseason', 'lzseason_request' );
-// add_action( 'wp_ajax_nopriv_lzseason', 'lzseason_request' );
 
 wp_register_script('angular', 'https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js');  
 wp_register_script('angular-animate', 'https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-animate.min.js');  
@@ -261,7 +185,17 @@ wp_register_style('bootsrap-css', 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3
 
 $plugin_url = plugin_dir_url( __FILE__ );
 wp_register_script('lz-js', $plugin_url. '/views/lz-cricket-angular.js'); 
+
 wp_register_style('lz-css', $plugin_url . '/views/lz-cricket.css');
+
+function use_less_css() {
+  $plugin_url = plugin_dir_url( __FILE__ );
+  echo '
+    <link rel="stylesheet/less" type="text/css" href="'.$plugin_url.'/less/lz-cricket.less">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/2.5.1/less.min.js" type="text/javascript"></script>
+  ';
+}
+// add_action( 'wp_head' , 'use_less_css' );
 
 
 if (is_admin())
