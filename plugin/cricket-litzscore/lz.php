@@ -1,9 +1,6 @@
 <?php
 
 require_once 'lzconfig.php';
-if(!session_id()){
-	session_start();
-}
 
 function getAccessToken(){
   if($_SESSION['lzak']){
@@ -13,12 +10,6 @@ function getAccessToken(){
 }
 
 function setAccessToken(){
-	$dk = $_COOKIE['lzdk'];
-	if(!$dk){
-		$dk = 'xx';
-		setcookie('lzdk', $dk, 60*60*24*10, '/');
-	}
-
     $response = auth(session_id());
     $accessToken = $response['auth']['access_token'];
     $expiresIn = intval($response['auth']['expires']);

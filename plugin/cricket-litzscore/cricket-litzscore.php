@@ -16,6 +16,11 @@ require_once 'lzconfig.php';
 require_once 'lz.php';
 require_once 'cricket-litzscore-admin.php';
 
+if(!session_id()){
+  session_start();
+}
+
+
 $LZ_FLAGS_MAPPING = array(
   'stz' => 'http://www.sknpatriots.com/wp-content/uploads/2015/05/stlucia_zouks.png',
   'snp' => 'http://www.sknpatriots.com/wp-content/uploads/2015/05/SKN-Patriots.png',
@@ -56,16 +61,16 @@ function insert_script_src() {
 
 function get_season_data($seasonKey){
   $ak = getAccessToken();
-  if($ak){
+  if($ak){    
     $season = getSeason($ak, $seasonKey, 'micro_card');
     return $season;
   }else{
     setAccessToken();
     $ak = getAccessToken();
     if($ak){
-      get_season_data($seasonKey);
+      return get_season_data($seasonKey);
     }else{
-      return array();
+      die('Error while getting season information');
     }    
   }
 }
